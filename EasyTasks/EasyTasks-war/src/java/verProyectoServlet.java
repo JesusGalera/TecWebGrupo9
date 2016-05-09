@@ -31,7 +31,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author jesus
  */
-@WebServlet(urlPatterns = {"/verProyectoServlet"}, name = "verProyectoServlet")
+@WebServlet(name = "verProyectoServlet", urlPatterns = {"/verProyectoServlet"})
 public class verProyectoServlet extends HttpServlet {
 @EJB
 private EntradaFacade entradaFacade;
@@ -58,7 +58,11 @@ private Usuario usuario;
      * @throws IOException if an I/O error occurs
      */
 
-    private void ClasificarListas(Proyecto proyecto){
+    private void ClasificarListas(String idProyecto){
+        Proyecto proyecto = this.proyectoFacade.find(new BigDecimal(idProyecto));
+        toDo.clear();
+        inProg.clear();
+        done.clear();
         for(Tarea t : proyecto.getTareaCollection()){
             if(t.getEstado().equalsIgnoreCase("ToDo")){
                 toDo.add(t);
@@ -71,7 +75,7 @@ private Usuario usuario;
         }
     }
     private void GenerarChat(Proyecto proyecto){
-        
+        chat.clear();
         for(Entrada e : entradaFacade.findAll()){
             if(e.getProyectoId().getId()==proyecto.getId()){
                 chat.add(e);
@@ -87,24 +91,23 @@ private Usuario usuario;
             throws ServletException, IOException {
         HttpSession sesion = request.getSession();
         String idProyecto = request.getParameter("idProyecto");
-        Proyecto proyecto = proyectoFacade.find(new BigDecimal(idProyecto));
+        Proyecto proyecto = this.proyectoFacade.find(new BigDecimal(idProyecto));
         usuario = (Usuario) sesion.getAttribute("Usuario");
        
-        this.ClasificarListas(proyecto);
+        this.ClasificarListas(idProyecto);
         request.setAttribute("ToDo", toDo);
         request.setAttribute("InProg", inProg);
         request.setAttribute("Done", done);
-        //this.GenerarChat();
-        //request.setAttribute("Chat", chat);
+        this.GenerarChat(proyecto);
+        request.setAttribute("Chat", chat);
         request.setAttribute("Proyecto",proyecto);
        
         RequestDispatcher rd;
         if(proyecto.getUsuarioId().equals(usuario)){
-         rd = this.getServletContext().getRequestDispatcher("/verProyectoAdmin.jsp");
+         rd = this.getServletContext().getRequestDispatcher("/pruebamostrarproyecto.jsp");
         }else{
-         rd = this.getServletContext().getRequestDispatcher("/verProyectoAdmin.jsp");
+         rd = this.getServletContext().getRequestDispatcher("/pruebamostrarproyecto.jsp");
         }
-        
         
         rd.forward(request, response);
     }

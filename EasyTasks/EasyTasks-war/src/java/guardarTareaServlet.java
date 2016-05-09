@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author winnielean
  */
-@WebServlet(name="editarTareaServlet",urlPatterns = {"/editarTareaServlet"})
+@WebServlet(name="guardarTareaServlet",urlPatterns = {"/guardarTareaServlet"})
 public class guardarTareaServlet extends HttpServlet {
 @EJB
 private TareaFacade tareaFacade;
@@ -36,18 +36,18 @@ private TareaFacade tareaFacade;
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Tarea n = new Tarea();
+        Tarea tarea = new Tarea();
         String str = request.getParameter("id");
         if (str!=null){
-            n = this.tareaFacade.find(new BigDecimal("str"));
+            tarea = this.tareaFacade.find(new BigDecimal("str"));
         }
         String s = request.getParameter("textoEditadoTarea");
-        n.setDescripcion(s);
+        tarea.setDescripcion(s);
         
         s = request.getParameter("estadoTarea");
-        n.setEstado(s);
+        tarea.setEstado(s);
         
-        this.tareaFacade.edit(n);
+        this.tareaFacade.edit(tarea);
         
         RequestDispatcher rd;
         

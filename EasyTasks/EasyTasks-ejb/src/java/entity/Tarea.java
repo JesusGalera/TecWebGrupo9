@@ -10,11 +10,14 @@ import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -22,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author winnielean
+ * @author jesus
  */
 @Entity
 @Table(name = "TAREA")
@@ -36,6 +39,8 @@ public class Tarea implements Serializable {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "secuencia_post")
+    @SequenceGenerator(name="secuencia_post", sequenceName = "SEQ_POST", allocationSize=1)
     @Id
     @Basic(optional = false)
     @NotNull
@@ -43,10 +48,12 @@ public class Tarea implements Serializable {
     private BigDecimal id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
+    @Size(min = 1, max = 50)
     @Column(name = "ESTADO")
     private String estado;
-    @Size(max = 500)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @JoinColumn(name = "PROYECTO_ID", referencedColumnName = "ID")
@@ -60,9 +67,10 @@ public class Tarea implements Serializable {
         this.id = id;
     }
 
-    public Tarea(BigDecimal id, String estado) {
+    public Tarea(BigDecimal id, String estado, String descripcion) {
         this.id = id;
         this.estado = estado;
+        this.descripcion = descripcion;
     }
 
     public BigDecimal getId() {
@@ -119,7 +127,7 @@ public class Tarea implements Serializable {
 
     @Override
     public String toString() {
-        return "entidades.Tarea[ id=" + id + " ]";
+        return "entity.Tarea[ id=" + id + " ]";
     }
     
 }

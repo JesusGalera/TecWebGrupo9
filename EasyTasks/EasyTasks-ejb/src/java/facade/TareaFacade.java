@@ -14,7 +14,7 @@ import javax.persistence.Query;
 
 /**
  *
- * @author winnielean
+ * @author jesus
  */
 @Stateless
 public class TareaFacade extends AbstractFacade<Tarea> {
@@ -26,15 +26,15 @@ public class TareaFacade extends AbstractFacade<Tarea> {
     protected EntityManager getEntityManager() {
         return em;
     }
-
-    public TareaFacade() {
-        super(Tarea.class);
-    }
-    
     public BigDecimal findMaxTareaId () {
         Query q;
         
         q = em.createQuery("select max(t.id) from Tarea t");
         return (BigDecimal)q.getSingleResult();
     }
+
+    public TareaFacade() {
+        super(Tarea.class);
+    }
+    
 }

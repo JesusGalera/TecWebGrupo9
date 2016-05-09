@@ -1,18 +1,19 @@
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
+import entity.Entrada;
 import entity.Proyecto;
-import entity.Tarea;
-import facade.ProyectoFacade;
-import facade.TareaFacade;
+import entity.Usuario;
+import facade.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.Collection;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,15 +25,14 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author winnielean
+ * @author jesus
  */
-@WebServlet(name="crearTareaServlet",urlPatterns = {"/crearTareaServlet"})
-public class crearTareaServlet extends HttpServlet {
+@WebServlet(name = "enviarMensajeServlet",urlPatterns = {"/enviarMensajeServlet"})
+public class enviarMensajeServlet extends HttpServlet {
     @EJB
-    private TareaFacade tareaFacade;
+    private EntradaFacade entradaFacade;
     @EJB
     private ProyectoFacade proyectoFacade;
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,33 +42,37 @@ public class crearTareaServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Tarea tarea = new Tarea ();
-        HttpSession session = request.getSession();
-        BigDecimal idProyecto = new BigDecimal(request.getParameter("idProyecto"));
-        //System.out.println(this.proyectoFacade.find(new BigDecimal(idP)).toString());
-        Proyecto proyecto = this.proyectoFacade.find(idProyecto);
+        
+        HttpSession sesion = request.getSession();
+        String idProyecto = request.getParameter("idProyecto");
+        Proyecto proyecto = this.proyectoFacade.find(new BigDecimal(idProyecto));
+        Usuario usuario = (Usuario) sesion.getAttribute("Usuario");
+        
+        Entrada entrada = new Entrada();
+        entrada.setProyectoId(proyecto);
+        entrada.setUsuarioId(usuario);
+        String texto = (String) request.getParameter("textoChat");
+        entrada.setTexto(texto);
+        Date fecha = Date.from(Instant.now());
+        entrada.setFechacreacion(fecha);
+        BigDecimal clave = this.entradaFacade.findMaxEntradaId();
        
-        tarea.setProyectoId(proyecto);
+        entrada.setId(clave.add(new BigDecimal("1")));
         
-        String s = (String)request.getParameter("textoTareaNueva");
-        tarea.setDescripcion(s);
-        s = (String)request.getParameter("estadoTarea");
-        tarea.setEstado(s);
+        Collection entradaCollection = proyecto.getEntradaCollection();
+        entradaCollection.add(entrada);
         
-        BigDecimal clave = this.tareaFacade.findMaxTareaId();
+        proyecto.setEntradaCollection(entradaCollection);
         
-        tarea.setId(clave.add(new BigDecimal("1")));
-        this.tareaFacade.create(tarea);
-        Collection tareaCollection = proyecto.getTareaCollection();
-        tareaCollection.add(tarea);
-        proyecto.setTareaCollection(tareaCollection);
+        this.entradaFacade.create(entrada);
         this.proyectoFacade.edit(proyecto);
-        //request.setAttribute("idProyecto", idProyecto);
+        
         RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/verProyectoServlet?idProyecto="+idProyecto);
         rd.forward(request, response);
+
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

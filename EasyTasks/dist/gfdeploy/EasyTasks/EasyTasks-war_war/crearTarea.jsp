@@ -15,18 +15,17 @@
         <title>Crear tarea</title>
     </head>
         <body>
-       <form name= "tareanueva" method="post" action="crearTareaServlet">
-        <div>
-            <input type="hidden" name="idProyecto" value="<%= idProyecto%>" />
+       <form method="post" action="crearTareaServlet?idProyecto=<%= idProyecto%>">
             <input type="text" name="textoTareaNueva" value="" /><br/>
             <select name="estadoTarea">
-                <option value="todo">To Do</option>
-                <option value="inprogress">In Progress</option>
+                <option value="toDo" selected>To Do</option>
+                <option value="inProg">In Progress</option>
                 <option value="done">Done</option>
             </select>
-            <a href="crearTareaServlet">Guardar</a>
-        </div>
+            <input type="submit" value="Guardar" />
+            <%--<input type="submit" value="Guardar" /> <a href="verProyectoServlet?idProyecto=<%=idProyecto%>"></a>
+            <%--<a href="crearTareaServlet?idProyecto=<%=idProyecto%>">Guardar</a>--%>
        </form>
-            <a href="verProyectoServlet"> Volver al proyecto </a>
+            <a href="verProyectoAdmin.jsp?idProyecto=<%=idProyecto%>"> Volver al proyecto </a>
     </body>
 </html>

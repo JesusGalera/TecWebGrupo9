@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author winnielean
+ * @author jesus
  */
 @Stateless
 public class UsuarioFacade extends AbstractFacade<Usuario> {
@@ -28,8 +28,9 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
     public UsuarioFacade() {
         super(Usuario.class);
     }
-    
     public Usuario findByNickname(String nickname){
         return (Usuario)em.createNamedQuery("Usuario.findByNickname").setParameter("nickname", nickname).getSingleResult();
     }
+
+    
 }

@@ -14,7 +14,7 @@
     <body>
         <form method="post" action="loginServlet">
         Nickname:<input type="text" name="nickname" /><br/>
-        Password:<input type="text" name="password" /><br/>
+        Password:<input type="password" name="password" /><br/>
         <input type="submit" value="login" />
         </form>
         <b><a style="color:red"><%= request.getParameter("msg") != null ? request.getParameter("msg") : ""%></a></b>

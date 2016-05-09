@@ -13,6 +13,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -20,7 +22,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,7 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author winnielean
+ * @author jesus
  */
 @Entity
 @Table(name = "PROYECTO")
@@ -40,12 +42,14 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Proyecto.findAll", query = "SELECT p FROM Proyecto p"),
     @NamedQuery(name = "Proyecto.findById", query = "SELECT p FROM Proyecto p WHERE p.id = :id"),
     @NamedQuery(name = "Proyecto.findByNombre", query = "SELECT p FROM Proyecto p WHERE p.nombre = :nombre"),
-    @NamedQuery(name = "Proyecto.findByFechaCreacion", query = "SELECT p FROM Proyecto p WHERE p.fechaCreacion = :fechaCreacion"),
+    @NamedQuery(name = "Proyecto.findByFechacreacion", query = "SELECT p FROM Proyecto p WHERE p.fechacreacion = :fechacreacion"),
     @NamedQuery(name = "Proyecto.findByDescripcion", query = "SELECT p FROM Proyecto p WHERE p.descripcion = :descripcion")})
 public class Proyecto implements Serializable {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "secuencia_post")
+    @SequenceGenerator(name="secuencia_post", sequenceName = "SEQ_POST", allocationSize=1)
     @Id
     @Basic(optional = false)
     @NotNull
@@ -56,10 +60,10 @@ public class Proyecto implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "NOMBRE")
     private String nombre;
-    @Column(name = "FECHA_CREACION")
+    @Column(name = "FECHACREACION")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaCreacion;
-    @Size(max = 500)
+    private Date fechacreacion;
+    @Size(max = 100)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @ManyToMany(mappedBy = "proyectoCollection")
@@ -67,8 +71,8 @@ public class Proyecto implements Serializable {
     @JoinColumn(name = "USUARIO_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Usuario usuarioId;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "proyectoId")
-    private Entrada entrada;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyectoId")
+    private Collection<Entrada> entradaCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyectoId")
     private Collection<Tarea> tareaCollection;
 
@@ -100,12 +104,12 @@ public class Proyecto implements Serializable {
         this.nombre = nombre;
     }
 
-    public Date getFechaCreacion() {
-        return fechaCreacion;
+    public Date getFechacreacion() {
+        return fechacreacion;
     }
 
-    public void setFechaCreacion(Date fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
+    public void setFechacreacion(Date fechacreacion) {
+        this.fechacreacion = fechacreacion;
     }
 
     public String getDescripcion() {
@@ -133,12 +137,13 @@ public class Proyecto implements Serializable {
         this.usuarioId = usuarioId;
     }
 
-    public Entrada getEntrada() {
-        return entrada;
+    @XmlTransient
+    public Collection<Entrada> getEntradaCollection() {
+        return entradaCollection;
     }
 
-    public void setEntrada(Entrada entrada) {
-        this.entrada = entrada;
+    public void setEntradaCollection(Collection<Entrada> entradaCollection) {
+        this.entradaCollection = entradaCollection;
     }
 
     @XmlTransient
@@ -172,7 +177,7 @@ public class Proyecto implements Serializable {
 
     @Override
     public String toString() {
-        return "entidades.Proyecto[ id=" + id + " ]";
+        return "entity.Proyecto[ id=" + id + " ]";
     }
     
 }

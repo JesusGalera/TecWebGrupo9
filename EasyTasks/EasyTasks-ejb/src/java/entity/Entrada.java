@@ -11,12 +11,14 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,7 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author winnielean
+ * @author jesus
  */
 @Entity
 @Table(name = "ENTRADA")
@@ -35,24 +37,28 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Entrada.findAll", query = "SELECT e FROM Entrada e"),
     @NamedQuery(name = "Entrada.findById", query = "SELECT e FROM Entrada e WHERE e.id = :id"),
     @NamedQuery(name = "Entrada.findByTexto", query = "SELECT e FROM Entrada e WHERE e.texto = :texto"),
-    @NamedQuery(name = "Entrada.findByFechacracion", query = "SELECT e FROM Entrada e WHERE e.fechacracion = :fechacracion")})
+    @NamedQuery(name = "Entrada.findByFechacreacion", query = "SELECT e FROM Entrada e WHERE e.fechacreacion = :fechacreacion")})
 public class Entrada implements Serializable {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "secuencia_post")
+    @SequenceGenerator(name="secuencia_post", sequenceName = "SEQ_POST", allocationSize=1)
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
     private BigDecimal id;
-    @Size(max = 200)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "TEXTO")
     private String texto;
-    @Column(name = "FECHACRACION")
+    @Column(name = "FECHACREACION")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechacracion;
+    private Date fechacreacion;
     @JoinColumn(name = "PROYECTO_ID", referencedColumnName = "ID")
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     private Proyecto proyectoId;
     @JoinColumn(name = "USUARIO_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
@@ -63,6 +69,11 @@ public class Entrada implements Serializable {
 
     public Entrada(BigDecimal id) {
         this.id = id;
+    }
+
+    public Entrada(BigDecimal id, String texto) {
+        this.id = id;
+        this.texto = texto;
     }
 
     public BigDecimal getId() {
@@ -81,12 +92,12 @@ public class Entrada implements Serializable {
         this.texto = texto;
     }
 
-    public Date getFechacracion() {
-        return fechacracion;
+    public Date getFechacreacion() {
+        return fechacreacion;
     }
 
-    public void setFechacracion(Date fechacracion) {
-        this.fechacracion = fechacracion;
+    public void setFechacreacion(Date fechacreacion) {
+        this.fechacreacion = fechacreacion;
     }
 
     public Proyecto getProyectoId() {
@@ -127,7 +138,7 @@ public class Entrada implements Serializable {
 
     @Override
     public String toString() {
-        return "entidades.Entrada[ id=" + id + " ]";
+        return "entity.Entrada[ id=" + id + " ]";
     }
     
 }
