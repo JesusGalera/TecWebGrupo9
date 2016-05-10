@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -76,11 +77,10 @@ private Usuario usuario;
     }
     private void GenerarChat(Proyecto proyecto){
         chat.clear();
-        for(Entrada e : entradaFacade.findAll()){
-            if(e.getProyectoId().getId()==proyecto.getId()){
+        for(Entrada e : entradaFacade.findByProyectoIdOrderByFecha(proyecto)){
                 chat.add(e);
-            }
         }
+        System.out.println(Arrays.toString(entradaFacade.findAll().toArray()));
     }
     
     public void init (ServletConfig config) throws ServletException{

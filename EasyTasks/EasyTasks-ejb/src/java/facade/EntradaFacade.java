@@ -6,9 +6,12 @@
 package facade;
 
 import entity.Entrada;
+import entity.Proyecto;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -32,9 +35,11 @@ public class EntradaFacade extends AbstractFacade<Entrada> {
     }
     public BigDecimal findMaxEntradaId () {
         Query q;
-        
         q = em.createQuery("select max(e.id) from Entrada e");
-        return (BigDecimal)q.getSingleResult();
-        
+        return (BigDecimal)q.getSingleResult();  
+    }
+    
+    public List<Entrada> findByProyectoIdOrderByFecha(Proyecto proyecto){
+        return em.createNamedQuery("Entrada.findByProyectoIdOrderByFecha").setParameter("idProyecto", proyecto).getResultList();
     }
 }

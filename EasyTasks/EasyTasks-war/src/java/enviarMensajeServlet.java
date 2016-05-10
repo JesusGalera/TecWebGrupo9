@@ -15,6 +15,7 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Date;
 import javax.ejb.EJB;
+import javax.persistence.NoResultException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -57,9 +58,14 @@ public class enviarMensajeServlet extends HttpServlet {
         entrada.setTexto(texto);
         Date fecha = Date.from(Instant.now());
         entrada.setFechacreacion(fecha);
-        BigDecimal clave = this.entradaFacade.findMaxEntradaId();
-       
-        entrada.setId(clave.add(new BigDecimal("1")));
+        BigDecimal clave;
+        try{
+            clave = this.entradaFacade.findMaxEntradaId();
+            entrada.setId(clave.add(new BigDecimal("1")));
+        } catch (Exception e){
+            clave = new BigDecimal("1");
+            entrada.setId(clave);
+        }
         
         Collection entradaCollection = proyecto.getEntradaCollection();
         entradaCollection.add(entrada);

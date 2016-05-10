@@ -56,9 +56,10 @@ public class GuardarProyectoServlet extends HttpServlet {
         String [] nickNames = (String []) request.getParameterValues("usuarioSelecionado");
         List<Usuario> usuarios = new ArrayList<Usuario>();
         usuarios.add(usuario);
-        
-        for(String nickname : nickNames){
-            usuarios.add(usuarioFacade.findByNickname(nickname));
+        if(nickNames != null){
+            for(String nickname : nickNames){
+                usuarios.add(usuarioFacade.findByNickname(nickname));
+             }
         }
         
         proyecto.setNombre(nombre);
@@ -68,10 +69,13 @@ public class GuardarProyectoServlet extends HttpServlet {
         proyecto.setEntradaCollection(new ArrayList<Entrada>());
         proyecto.setFechacreacion(Date.from(Instant.now()));
         proyecto.setTareaCollection(new ArrayList<Tarea>());
-        
-        BigDecimal clave = this.proyectoFacade.findMaxProyectoId();
-        
-        proyecto.setId(clave.add(new BigDecimal("1")));
+        BigDecimal clave;
+        try{
+            clave = this.proyectoFacade.findMaxProyectoId();
+            proyecto.setId(clave.add(new BigDecimal("1")));
+        } catch(Exception e){
+            proyecto.setId(new BigDecimal("1"));
+        }
         
         this.proyectoFacade.create(proyecto);
        

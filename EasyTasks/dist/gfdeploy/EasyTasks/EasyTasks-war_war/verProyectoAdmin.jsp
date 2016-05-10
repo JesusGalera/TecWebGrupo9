@@ -32,6 +32,7 @@
     </head>
     <body>
         <h1><%=proyecto.getNombre()%></h1>
+        <p> <%= proyecto.getDescripcion() %></p>
         <table border="1">
             <caption>Tareas</caption>
             <tr>

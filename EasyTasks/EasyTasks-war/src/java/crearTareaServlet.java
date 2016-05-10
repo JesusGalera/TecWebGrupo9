@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
 import javax.ejb.EJB;
+import javax.persistence.NoResultException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -58,10 +59,14 @@ public class crearTareaServlet extends HttpServlet {
         tarea.setDescripcion(s);
         s = (String)request.getParameter("estadoTarea");
         tarea.setEstado(s);
-        
-        BigDecimal clave = this.tareaFacade.findMaxTareaId();
-        
-        tarea.setId(clave.add(new BigDecimal("1")));
+        BigDecimal clave;
+        try{
+            clave = this.tareaFacade.findMaxTareaId();
+            tarea.setId(clave.add(new BigDecimal("1")));
+        } catch (Exception e){
+            clave = new BigDecimal("1");
+            tarea.setId(clave);
+        }
         this.tareaFacade.create(tarea);
         Collection tareaCollection = proyecto.getTareaCollection();
         tareaCollection.add(tarea);

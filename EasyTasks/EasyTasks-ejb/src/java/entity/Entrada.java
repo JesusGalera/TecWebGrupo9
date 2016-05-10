@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Entrada.findAll", query = "SELECT e FROM Entrada e"),
     @NamedQuery(name = "Entrada.findById", query = "SELECT e FROM Entrada e WHERE e.id = :id"),
     @NamedQuery(name = "Entrada.findByTexto", query = "SELECT e FROM Entrada e WHERE e.texto = :texto"),
+    @NamedQuery(name = "Entrada.findByProyectoIdOrderByFecha", query = "SELECT e FROM Entrada e WHERE e.proyectoId=:idProyecto ORDER BY e.fechacreacion"),
     @NamedQuery(name = "Entrada.findByFechacreacion", query = "SELECT e FROM Entrada e WHERE e.fechacreacion = :fechacreacion")})
 public class Entrada implements Serializable {
 

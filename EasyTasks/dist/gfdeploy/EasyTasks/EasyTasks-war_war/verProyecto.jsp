@@ -30,6 +30,7 @@
     </head>
     <body>
         <h1><%=proyecto.getNombre()%></h1>
+        <p> <%= proyecto.getDescripcion() %></p>
         <table border="1">
             <caption>Tareas</caption>
             <tr>
@@ -84,7 +85,7 @@
                     %>
                     <tr>
                         <td>
-                            <h5><%=e.getUsuarioId().getNickname()%> </h5>
+                            <h5><%=e.getUsuarioId().getNickname()%>  - <%=e.getFechacreacion()%></h5>
                             <%=e.getTexto()%></br>
                         </td>
                     </tr>

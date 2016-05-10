@@ -9,6 +9,7 @@ import entity.Tarea;
 import java.math.BigDecimal;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -28,9 +29,11 @@ public class TareaFacade extends AbstractFacade<Tarea> {
     }
     public BigDecimal findMaxTareaId () {
         Query q;
-        
         q = em.createQuery("select max(t.id) from Tarea t");
-        return (BigDecimal)q.getSingleResult();
+        
+            return (BigDecimal)q.getSingleResult();
+        
+        
     }
 
     public TareaFacade() {

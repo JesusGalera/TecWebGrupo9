@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import javax.ejb.EJB;
+import javax.persistence.NoResultException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -53,6 +54,14 @@ public class registrarServlet extends HttpServlet {
                 }
             }
         }
+        BigDecimal clave;
+                try{
+                    clave = this.usuarioFacade.findMaxUsuarioId().add(new BigDecimal("1"));
+                    usuario.setId(clave);
+                } catch(Exception e){
+                    clave = new BigDecimal("1");
+                    usuario.setId(clave);
+                }
         try{
             Usuario existe = this.usuarioFacade.findByNicknameOrEmail(nickname,email);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/registro.jsp?msg=El nickname o el email ya existen en el sistema");
@@ -70,8 +79,6 @@ public class registrarServlet extends HttpServlet {
                 usuario.setEmail(email);
                 usuario.setNombre(nombre);
                 usuario.setApellidos(apellidos);
-                BigDecimal clave = this.usuarioFacade.findMaxUsuarioId().add(new BigDecimal("1"));
-                usuario.setId(clave);
                 this.usuarioFacade.create(usuario);
         
                 RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/login.jsp?registroOK=El registro se ha realizado con exito.");
