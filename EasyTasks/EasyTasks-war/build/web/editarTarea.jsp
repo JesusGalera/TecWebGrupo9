@@ -9,9 +9,10 @@
 
 <!DOCTYPE html>
 <%  
-    BigDecimal tId = (BigDecimal)request.getAttribute("id");
+    String idTarea = (String)request.getAttribute("idTarea");
     String texto = (String)request.getAttribute("texto");
-    String estado = (String)request.getAttribute("actual");
+    String estado = (String)request.getAttribute("estadoActual");
+    
     
 %>
 <html>
@@ -20,15 +21,15 @@
         <title>Modificar tarea</title>
     </head>
     <body>
-        <form name= "tareamodificar" method="post" action="guardarTareaServlet">
+        <form method="post" action="guardarTareaServlet?idTarea=<%=idTarea%>">
         <input type="text" name="textoEditadoTarea" value="<%=texto%>"/><br/>
-        <select name="estadoTarea" value="<%=estado%>">
+        <select name="estadoTarea">
             <option value="todo">To Do</option>
             <option value="inprog">In Progress</option>
             <option value="done">Done</option>
-            <td><a href="guardarTareaServletid?id=<%=tId%>">Guardar</a></td>
+            <input type="submit" value="Guardar"/>
         </select>
-            <td><a href="eliminarTareaServlet?id=<%=tId%>">Eliminar</a></td>
+            <td><a href="eliminarTareaServlet?idTarea=<%=idTarea%>">Eliminar</a></td>
             
         </form>
     </body>

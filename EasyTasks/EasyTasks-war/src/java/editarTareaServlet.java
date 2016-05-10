@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -36,18 +37,18 @@ private TareaFacade tareaFacade;
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Tarea n = new Tarea();
-        String str = request.getParameter("idTarea");
-        if (str!=null){
-            n = this.tareaFacade.find(new BigDecimal("str")); //transformar string en BigDecimal
-        }
-        request.setAttribute("id", n.getId());
+        Tarea n;
+        String idTareaString = request.getParameter("idTarea");
+        BigDecimal idTarea = new BigDecimal(idTareaString);
+        //System.out.println("SERVLETEDITAR: "+idTareaString);
+        n = this.tareaFacade.find(idTarea); //transformar string en BigDecimal
         request.setAttribute("texto", n.getDescripcion());
-        request.setAttribute("estadoactual", n.getEstado());
-        
+        request.setAttribute("estadoActual", n.getEstado());
+        request.setAttribute("idProyecto", n);
+        request.setAttribute("idTarea",idTareaString);
         RequestDispatcher rd;
         
-        rd = this.getServletContext().getRequestDispatcher("/editarTarea.jsp");
+        rd = this.getServletContext().getRequestDispatcher("/editarTarea.jsp?idTarea="+idTareaString);
         rd.forward(request, response);
     }
 

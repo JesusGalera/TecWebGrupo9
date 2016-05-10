@@ -12,11 +12,46 @@
         <title>Login</title>
     </head>
     <body>
-        <form method="post" action="loginServlet">
-        Nickname:<input type="text" name="nickname" /><br/>
-        Password:<input type="password" name="password" /><br/>
-        <input type="submit" value="login" />
+        <form method="POST" action="loginServlet">
+            <center>
+            <table border="1" width="30%" cellpadding="3">
+                <thead>
+                    <tr>
+                        <th colspan="2">Iniciar sesion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Nickname</td>
+                        <td><input type="text" name="nickname" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td>Password</td>
+                        <td><input type="password" name="password" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td><input type="submit" value="login" /></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">¿Aun no te has registrado?<a href="registro.jsp">Registrate aqui</a></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><a href="recuperarContrasena.jsp">Recuperar contraseña</a></td>
+                    </tr>
+                </tbody>
+            </table>
+            </center>
         </form>
-        <b><a style="color:red"><%= request.getParameter("msg") != null ? request.getParameter("msg") : ""%></a></b>
+        
+        <center>
+            <form method="post" action="recuperarContrasenaServlet">
+                
+            </form>
+            <b><a style="color:red"><%= request.getParameter("msg") != null ? request.getParameter("msg") : ""%></a></b>
+            <b><a style="color:green"><%= request.getParameter("registroOK") != null ? request.getParameter("registroOK") : ""%></a></b>
+        </center>
+        <%--<form method="post" action="registro.jsp">
+            <input type="submit" value="Registrarse"/>
+        </form>--%>
     </body>
 </html>

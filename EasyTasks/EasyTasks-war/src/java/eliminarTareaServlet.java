@@ -4,11 +4,14 @@
  * and open the template in the editor.
  */
 
+import entity.Proyecto;
 import entity.Tarea;
+import facade.ProyectoFacade;
 import facade.TareaFacade;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.util.Collection;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -24,7 +28,9 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name="eliminarTareaServlet",urlPatterns = {"/eliminarTareaServlet"})
 public class eliminarTareaServlet extends HttpServlet {
 @EJB
-private TareaFacade tf;
+private TareaFacade tareaFacade;
+@EJB
+private ProyectoFacade proyectoFacade;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,16 +42,22 @@ private TareaFacade tf;
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String s = request.getParameter("id");
-        if(s!=null){
-            Tarea t = this.tf.find(new BigDecimal("s")); //obtener tarea mediante id;
-            this.tf.remove(t);
-        }
-        RequestDispatcher rd;
-        
-        rd = this.getServletContext().getRequestDispatcher("verProyectoServlet");
-        rd.forward(request, response);
+        HttpSession sesion = request.getSession();
+        Tarea tarea;
+        String idTareaString = request.getParameter("idTarea");
+        //System.out.println(idTareaString);
+        BigDecimal idTarea = new BigDecimal(idTareaString);
+        tarea = this.tareaFacade.find(idTarea);
+        Proyecto proyecto = (Proyecto)sesion.getAttribute("proyectoActual");
+
+        this.tareaFacade.remove(tarea);
+        Collection collectionTarea = proyecto.getTareaCollection();
+        collectionTarea.remove(tarea);
+        proyecto.setTareaCollection(collectionTarea);
+        this.proyectoFacade.edit(proyecto);
+        response.sendRedirect("verProyectoServlet?idProyecto="+proyecto.getId());
+        //RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/verProyectoServlet?idProyecto="+proyecto.getId());
+        //rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

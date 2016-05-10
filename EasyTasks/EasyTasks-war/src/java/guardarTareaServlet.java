@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+import entity.Proyecto;
 import entity.Tarea;
 import facade.TareaFacade;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -36,11 +38,11 @@ private TareaFacade tareaFacade;
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Tarea tarea = new Tarea();
-        String str = request.getParameter("id");
-        if (str!=null){
-            tarea = this.tareaFacade.find(new BigDecimal("str"));
-        }
+        HttpSession sesion = request.getSession();
+        Tarea tarea;
+        BigDecimal idTarea = new BigDecimal(request.getParameter("idTarea"));
+        tarea = this.tareaFacade.find(idTarea);
+        
         String s = request.getParameter("textoEditadoTarea");
         tarea.setDescripcion(s);
         
@@ -48,11 +50,10 @@ private TareaFacade tareaFacade;
         tarea.setEstado(s);
         
         this.tareaFacade.edit(tarea);
-        
-        RequestDispatcher rd;
-        
-        rd = this.getServletContext().getRequestDispatcher("verProyectoServlet");
-        rd.forward(request, response);
+        Proyecto proyecto = (Proyecto)sesion.getAttribute("proyectoActual");
+        response.sendRedirect("verProyectoServlet?idProyecto="+proyecto.getId());
+        //RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/verProyectoServlet?idProyecto="+proyecto.getId());
+        //rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

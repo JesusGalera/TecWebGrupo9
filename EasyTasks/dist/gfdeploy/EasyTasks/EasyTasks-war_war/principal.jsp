@@ -35,6 +35,8 @@
                     }
                 %>
             </table>
+            <a href="NuevoProyectoServlet">Crear un nuevo proyecto</a>
+            <a href="verUsuarioServlet">Ver mi perfil</a>
         </div>
     </body>
 </html>

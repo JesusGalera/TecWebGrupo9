@@ -4,6 +4,7 @@
     Author     : Victor
 --%>
 
+<%@page import="entity.Usuario"%>
 <%@page import="entity.Entrada"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.ArrayList"%>
@@ -21,6 +22,7 @@
    done = (ArrayList<Tarea>) request.getAttribute("Done");
    Iterator<Tarea> iteratorDone = done.iterator();
    List<Entrada> Chat = (List<Entrada>) request.getAttribute("Chat");
+   
    String mensaje="";
 %>
 <html>
@@ -39,30 +41,39 @@
             </tr>
             <% 
                 String toDoString, inProgString, doneString;
+                Tarea toDoTarea = new Tarea();
+                Tarea inProgTarea = new Tarea();
+                Tarea doneTarea = new Tarea();
                 while(iteratorToDo.hasNext() || iteratorInProg.hasNext() || iteratorDone.hasNext()){
                     toDoString = "";
                     inProgString = "";
                     doneString = "";
                     if(iteratorToDo.hasNext()){
-                        toDoString = iteratorToDo.next().getDescripcion();
+                        toDoTarea = iteratorToDo.next();
+                        toDoString = toDoTarea.getDescripcion();
                     }
                     if(iteratorInProg.hasNext()){
-                        inProgString = iteratorInProg.next().getDescripcion();
+                        inProgTarea = iteratorInProg.next();
+                        inProgString = inProgTarea.getDescripcion();
                     }
                     if(iteratorDone.hasNext()){
-                        doneString = iteratorDone.next().getDescripcion();
+                        doneTarea = iteratorDone.next();
+                        doneString = doneTarea.getDescripcion();
                     }
             %>
             <tr>
-                <td><%= toDoString %></td>
-                <td><%= inProgString %></td>
-                <td><%= doneString %></td>
+                <td><a href="editarTareaServlet?idTarea=<%=toDoTarea.getId()%>"><%= toDoString %></a></td>
+                <td><a href="editarTareaServlet?idTarea=<%=inProgTarea.getId()%>"><%= inProgString %></a></td>
+                <td><a href="editarTareaServlet?idTarea=<%=doneTarea.getId()%>"><%= doneString %></a></td>
             </tr>
             <%
                 }
             %>
-            
+			</table>
+            <br/>
             <a href="crearTarea.jsp?idProyecto=<%=proyecto.getId()%>">Crear Nueva Tarea</a>
+            <br/>
+            <a href="principalServlet">Volver al Menú Principal</a>
             
             
             <table width="100%" border="1" cellspacing="0" cellpadding="0" bordercolor="#000000">

@@ -52,9 +52,9 @@ public class loginServlet extends HttpServlet {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp?msg=Usuario y/o contraseña incorrectos");
                 dispatcher.forward(request, response);
             }
+            
             if(usuario!= null && userNum && usuario.getContrasena().equals(request.getParameter("password"))){
                 session.setAttribute("Usuario", usuario);
-                //RequestDispatcher dispatcher = request.getRequestDispatcher("menuMedico.jsp"
                 RequestDispatcher dispatcher = request.getRequestDispatcher("principalServlet");
                 
                 dispatcher.forward(request, response);

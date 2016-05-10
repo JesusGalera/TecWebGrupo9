@@ -6,6 +6,7 @@
 package facade;
 
 import entity.Usuario;
+import java.math.BigDecimal;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -30,6 +31,15 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
     }
     public Usuario findByNickname(String nickname){
         return (Usuario)em.createNamedQuery("Usuario.findByNickname").setParameter("nickname", nickname).getSingleResult();
+    }
+    public Usuario findByNicknameOrEmail(String nickname,String email){
+        return (Usuario)em.createNamedQuery("Usuario.findByNicknameOrEmail").setParameter("nickname",nickname).setParameter("email", email).getSingleResult();
+    }
+    public Usuario findByEmail(String email){
+        return (Usuario)em.createNamedQuery("Usuario.findByEmail").setParameter("email", email).getSingleResult();
+    }
+    public BigDecimal findMaxUsuarioId(){
+        return (BigDecimal)em.createQuery("select max(user.id) from Usuario user").getSingleResult();
     }
 
     

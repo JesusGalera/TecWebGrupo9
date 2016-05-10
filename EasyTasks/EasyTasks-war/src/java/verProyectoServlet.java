@@ -93,7 +93,8 @@ private Usuario usuario;
         String idProyecto = request.getParameter("idProyecto");
         Proyecto proyecto = this.proyectoFacade.find(new BigDecimal(idProyecto));
         usuario = (Usuario) sesion.getAttribute("Usuario");
-       
+        sesion.setAttribute("proyectoActual", proyecto);
+
         this.ClasificarListas(idProyecto);
         request.setAttribute("ToDo", toDo);
         request.setAttribute("InProg", inProg);
@@ -101,12 +102,16 @@ private Usuario usuario;
         this.GenerarChat(proyecto);
         request.setAttribute("Chat", chat);
         request.setAttribute("Proyecto",proyecto);
-       
+        List<Usuario> noUsuarios = usuarioFacade.findAll();
+        for(Usuario u : proyecto.getUsuarioCollection()){
+            noUsuarios.remove(u);
+        }
+        request.setAttribute("noUsuarios", noUsuarios);
         RequestDispatcher rd;
         if(proyecto.getUsuarioId().equals(usuario)){
-         rd = this.getServletContext().getRequestDispatcher("/pruebamostrarproyecto.jsp");
+         rd = this.getServletContext().getRequestDispatcher("/verProyectoAdmin.jsp");
         }else{
-         rd = this.getServletContext().getRequestDispatcher("/pruebamostrarproyecto.jsp");
+         rd = this.getServletContext().getRequestDispatcher("/verProyecto.jsp");
         }
         
         rd.forward(request, response);

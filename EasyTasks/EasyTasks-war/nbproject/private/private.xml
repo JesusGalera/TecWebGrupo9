@@ -3,16 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Victor/Desktop/EasyTasks/EasyTasks-war/web/principal.jsp</file>
-            <file>file:/C:/Users/Victor/Desktop/EasyTasks/EasyTasks-war/src/java/guardarTareaServlet.java</file>
-            <file>file:/C:/Users/Victor/Desktop/EasyTasks/EasyTasks-war/web/crearTarea.jsp</file>
-            <file>file:/C:/Users/Victor/Desktop/EasyTasks/EasyTasks-war/src/java/crearTareaServlet.java</file>
-            <file>file:/C:/Users/Victor/Desktop/EasyTasks/EasyTasks-war/web/verProyecto.jsp</file>
-            <file>file:/C:/Users/Victor/Desktop/EasyTasks/EasyTasks-war/src/java/eliminarTareaServlet.java</file>
-            <file>file:/C:/Users/Victor/Desktop/EasyTasks/EasyTasks-war/web/verProyectoAdmin.jsp</file>
-            <file>file:/C:/Users/Victor/Desktop/EasyTasks/EasyTasks-war/src/java/editarTareaServlet.java</file>
-            <file>file:/C:/Users/Victor/Desktop/EasyTasks/EasyTasks-war/src/java/verProyectoServlet.java</file>
-            <file>file:/C:/Users/Victor/Desktop/EasyTasks/EasyTasks-war/src/java/principalServlet.java</file>
+            <file>file:/C:/Users/jesus/Documents/GitHub/TecWebGrupo9/EasyTasks/EasyTasks-war/src/java/recuperarContrasenaServlet.java</file>
+            <file>file:/C:/Users/jesus/Documents/GitHub/TecWebGrupo9/EasyTasks/EasyTasks-war/src/java/registrarServlet.java</file>
+            <file>file:/C:/Users/jesus/Documents/GitHub/TecWebGrupo9/EasyTasks/EasyTasks-war/src/java/loginServlet.java</file>
         </group>
     </open-files>
 </project-private>
